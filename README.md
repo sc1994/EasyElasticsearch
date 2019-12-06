@@ -90,8 +90,13 @@ Console.Write(logs);
     - `Include`:包含
     - `MatchPhrase`:短语匹配
 
-## 调试
+## 便利性
+
+> 引用
+
+建议的引用方式是clone项目代码到自己的解决方案下, 通过工程文件`.csproj` 添加程序集引用, 设置相对路径.
 
 > 如何查看生成的`dsl`
 
 运行调试. 在调试的堆栈输出中可以看到完整`dsl`
+![image](https://raw.githubusercontent.com/sc1994/EasyElasticsearch/master/static/%E6%88%AA%E5%9B%BE_1575599893743.png)
