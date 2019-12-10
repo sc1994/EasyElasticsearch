@@ -9,7 +9,7 @@ namespace EasyElasticsearch
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class ElasticsearchQueryResponse<T>
-        where T : ElasticSearchQueryItem
+        where T : ElasticsearchQueryItem
     {
         internal ElasticsearchQueryResponse(string content)
         {
@@ -75,7 +75,7 @@ namespace EasyElasticsearch
     /// <summary>
     /// es 列表基类, 响应实体必须继承此类
     /// </summary>
-    public class ElasticSearchQueryItem
+    public class ElasticsearchQueryItem
     {
         /// <summary>
         /// 文档所在索引

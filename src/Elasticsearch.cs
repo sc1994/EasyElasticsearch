@@ -114,7 +114,7 @@ namespace EasyElasticsearch
     /// ES 查询
     /// </summary>
     public class ElasticsearchQuery<T>
-        where T : ElasticSearchQueryItem
+        where T : ElasticsearchQueryItem
     {
         private readonly string _baseNode = $"{ElasticsearchQuery.ElasticSearchNode.Trim('/')}/{{0}}/_search";
         private readonly string _node;
@@ -223,7 +223,7 @@ namespace EasyElasticsearch
                     x => new ElasticsearchDslFilterFormat(x.should)
                 ).ToList();
             if (mustNot?.Any(x => x.mustNot != null) ?? false)
-                dsl.Query.Bool.MustNot = must.Select(
+                dsl.Query.Bool.MustNot = mustNot.Select(
                     x => new ElasticsearchDslFilterFormat(x.mustNot)
                 ).ToList();
 
@@ -291,7 +291,7 @@ Start=======复制以下的内容可在shell直接运行{DateTime.Now:yyyy-MM-dd
 curl -H ""Content-type:application/json"" -X POST -d '{SerializeObject(dsl, Formatting.Indented)}' {_node}?pretty
 End=========复制以上的内容可在shell直接运行{DateTime.Now:yyyy-M-dd HH:mm:ss.fff}==========End
 ";
-            Debug.WriteLine(msg);
+            Trace.WriteLine(msg);
             try
             {
                 var res = await _node.PostJsonAsync(dsl);
@@ -401,7 +401,7 @@ End=========复制以上的内容可在shell直接运行{DateTime.Now:yyyy-M-dd 
     }
 
     internal class OperateStorage<T>
-       where T : ElasticSearchQueryItem
+       where T : ElasticsearchQueryItem
     {
         private readonly ElasticsearchQuery<T> _search;
         internal List<List<(string field, CompareOperator operators, object value)>> CompareDict { get; }
@@ -443,7 +443,7 @@ End=========复制以上的内容可在shell直接运行{DateTime.Now:yyyy-M-dd 
         }
     }
 
-    class EasticsearchSort<T> where T : ElasticSearchQueryItem
+    class EasticsearchSort<T> where T : ElasticsearchQueryItem
     {
         internal List<(string field, string sortType)> SortDic { get; } = new List<(string field, string sortType)>();
 
@@ -614,7 +614,8 @@ End=========复制以上的内容可在shell直接运行{DateTime.Now:yyyy-M-dd 
         /// <returns></returns>
         private static CompareOperator ToCompareOperator(MethodInfo expressionType)
         {
-            var methodSign = expressionType.ToString().Split('[')[0]; // 这里的逻辑缺乏推敲
+            var methodSign = expressionType.ToString().Split('(')[0]; // 这里的逻辑缺乏推敲
+
             switch (methodSign)
             {
                 case "Boolean Match":
@@ -703,13 +704,7 @@ End=========复制以上的内容可在shell直接运行{DateTime.Now:yyyy-M-dd 
         {
             Bool = new
             {
-                filter = new
-                {
-                    @bool = new
-                    {
-                        filter = compare
-                    }
-                }
+                filter = compare
             };
         }
 
